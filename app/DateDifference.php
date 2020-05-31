@@ -30,7 +30,13 @@ class DateDifference
      */
     public function calculateDateDifference()
     {
-        if(
+        if (!$this->isValidFormat($this->firstDate)
+            || !$this->isValidFormat($this->firstDate)
+        ) {
+            return  'Invalid Date format, please input the correct date format.';
+        }
+
+        if (
             $this->convertDateToSeconds($this->firstDate)
              > $this->convertDateToSeconds($this->secondDate)
          ) {
@@ -45,9 +51,9 @@ class DateDifference
      * this method convert dates to timestamp
      * 
      * @param string $date
-     * @return int
+     * @return mixed
      */
-    public function convertDateToSeconds(string $date) : int
+    public function convertDateToSeconds(string $date)
     {
         $parseDate = explode("-", $date);
 
@@ -76,6 +82,16 @@ class DateDifference
         $totalSeconds += $day * $this->totalSecondsPerDay;
     
         return $totalSeconds;
+    }
+
+    private function isValidFormat($date = null)
+    {
+        $parseDate = explode("-", $date);
+       
+        if($date == null || count($parseDate) != 3 || !array_key_exists($parseDate[1], MONTHS)) {
+            return false;
+        }
+        return true;
     }
 
 }   
